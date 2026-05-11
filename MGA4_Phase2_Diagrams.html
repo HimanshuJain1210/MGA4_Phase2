@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGA4 · Phase 2 · AI Adoption Paradox</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral-50: #FAECE7; --coral-100: #F5C4B3; --coral-200: #F0997B; --coral-400: #D85A30; --coral-600: #993C1D; --coral-800: #712B13; --coral-900: #4A1B0C;
+    --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-200: #5DCAA5; --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041; --teal-900: #04342C;
+    --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-200: #AFA9EC; --purple-400: #7F77DD; --purple-600: #534AB7; --purple-800: #3C3489; --purple-900: #26215C;
+    --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-200: #B4B2A9; --gray-400: #888780; --gray-600: #5F5E5A; --gray-800: #444441; --gray-900: #2C2C2A;
+    --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-400: #BA7517; --amber-800: #633806;
+    --bg: #0e0e0e;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede6;
+    --text2: #a8a49c;
+    --text3: #6b6762;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    padding: 56px 48px 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(29,158,117,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 10% 80%, rgba(127,119,221,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-200);
+    border: 1px solid rgba(29,158,117,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    max-width: 640px;
+    margin-bottom: 12px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--teal-200);
+  }
+  header p {
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 480px;
+  }
+  .authors {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    display: flex;
+    gap: 4px;
+    padding: 16px 48px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .nav-btn {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { background: var(--bg3); color: var(--text); }
+  .nav-btn.active {
+    background: var(--bg3);
+    border-color: var(--border2);
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ---- SECTIONS ---- */
+  .section { display: none; padding: 48px; animation: fadeIn 0.3s ease; }
+  .section.visible { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 36px;
+  }
+
+  /* ---- HMW GRID ---- */
+  .hmw-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .hmw-barrier {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .hmw-barrier:hover { border-color: var(--border2); }
+  .barrier-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .barrier-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .barrier-header h3 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .barrier-header .profile-tag {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .hmw-questions { padding: 0 18px 14px; }
+  .hmw-q {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .hmw-q:first-child { border-top: none; }
+  .hmw-q strong { color: var(--text); font-weight: 500; }
+  .solution-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin: 8px 18px 14px;
+  }
+
+  /* Colors per barrier */
+  .coral .barrier-header { background: rgba(216,90,48,0.08); }
+  .coral .barrier-dot { background: var(--coral-400); }
+  .coral .barrier-header h3 { color: var(--coral-200); }
+  .coral .profile-tag { background: rgba(216,90,48,0.15); color: var(--coral-200); }
+  .coral .solution-pill { background: rgba(216,90,48,0.12); color: var(--coral-200); border: 1px solid rgba(216,90,48,0.25); }
+
+  .teal .barrier-header { background: rgba(29,158,117,0.08); }
+  .teal .barrier-dot { background: var(--teal-400); }
+  .teal .barrier-header h3 { color: var(--teal-200); }
+  .teal .profile-tag { background: rgba(29,158,117,0.15); color: var(--teal-200); }
+  .teal .solution-pill { background: rgba(29,158,117,0.12); color: var(--teal-200); border: 1px solid rgba(29,158,117,0.25); }
+
+  .purple .barrier-header { background: rgba(127,119,221,0.08); }
+  .purple .barrier-dot { background: var(--purple-400); }
+  .purple .barrier-header h3 { color: var(--purple-200); }
+  .purple .profile-tag { background: rgba(127,119,221,0.15); color: var(--purple-200); }
+  .purple .solution-pill { background: rgba(127,119,221,0.12); color: var(--purple-200); border: 1px solid rgba(127,119,221,0.25); }
+
+  .gray-b .barrier-header { background: rgba(136,135,128,0.08); }
+  .gray-b .barrier-dot { background: var(--gray-400); }
+  .gray-b .barrier-header h3 { color: var(--gray-200); }
+  .gray-b .profile-tag { background: rgba(136,135,128,0.15); color: var(--gray-200); }
+  .gray-b .solution-pill { background: rgba(136,135,128,0.1); color: var(--gray-400); border: 1px solid rgba(136,135,128,0.2); }
+
+  /* ---- FILTER MATRIX ---- */
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 36px;
+  }
+  .matrix-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+  }
+  .matrix-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: middle;
+  }
+  .matrix-table tr:hover td { background: var(--bg3); }
+  .idea-name { color: var(--text); font-weight: 500; }
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 80px;
+  }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .total-score {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 28px;
+  }
+  .rank-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.05em;
+  }
+  .rank-1 { background: rgba(29,158,117,0.15); color: var(--teal-200); border: 1px solid rgba(29,158,117,0.3); }
+  .rank-2 { background: rgba(216,90,48,0.12); color: var(--coral-200); border: 1px solid rgba(216,90,48,0.25); }
+  .rank-3 { background: rgba(127,119,221,0.12); color: var(--purple-200); border: 1px solid rgba(127,119,221,0.25); }
+  .rank-b { background: rgba(136,135,128,0.1); color: var(--gray-400); border: 1px solid rgba(136,135,128,0.2); }
+
+  /* ---- USER FLOW ---- */
+  .flow-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-layer {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .flow-layer-header {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .layer-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .flow-layer-header h3 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .flow-layer-header span {
+    font-size: 12px;
+    color: var(--text2);
+    margin-left: auto;
+  }
+  .flow-steps {
+    display: flex;
+    align-items: stretch;
+    padding: 0 20px 20px;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 160px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .flow-step:hover { background: var(--bg3); border-color: var(--border2); }
+  .step-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 11.5px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: var(--text3);
+    font-size: 16px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .flow-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    color: var(--text3);
+    font-size: 12px;
+    gap: 8px;
+    position: relative;
+  }
+  .flow-connector::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: var(--border2);
+    z-index: 0;
+  }
+  .connector-label {
+    background: var(--bg2);
+    padding: 4px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    font-size: 11px;
+    color: var(--text2);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* layer color themes */
+  .layer-teal .flow-layer-header { background: rgba(29,158,117,0.06); border-bottom: 1px solid rgba(29,158,117,0.15); }
+  .layer-teal .layer-num { background: rgba(29,158,117,0.2); color: var(--teal-200); }
+  .layer-teal .flow-layer-header h3 { color: var(--teal-200); }
+  .layer-teal .flow-step:hover { border-color: rgba(29,158,117,0.3); }
+
+  .layer-coral .flow-layer-header { background: rgba(216,90,48,0.06); border-bottom: 1px solid rgba(216,90,48,0.15); }
+  .layer-coral .layer-num { background: rgba(216,90,48,0.2); color: var(--coral-200); }
+  .layer-coral .flow-layer-header h3 { color: var(--coral-200); }
+  .layer-coral .flow-step:hover { border-color: rgba(216,90,48,0.3); }
+
+  .layer-purple .flow-layer-header { background: rgba(127,119,221,0.06); border-bottom: 1px solid rgba(127,119,221,0.15); }
+  .layer-purple .layer-num { background: rgba(127,119,221,0.2); color: var(--purple-200); }
+  .layer-purple .flow-layer-header h3 { color: var(--purple-200); }
+  .layer-purple .flow-step:hover { border-color: rgba(127,119,221,0.3); }
+
+  /* ---- CONCEPT BRIEFS ---- */
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .concept-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .concept-card-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .concept-rank {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .concept-card-header h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .concept-card-header p {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .concept-body { padding: 16px 20px; }
+  .concept-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  .concept-label:first-child { margin-top: 0; }
+  .concept-value {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .concept-features {
+    list-style: none;
+    padding: 0;
+  }
+  .concept-features li {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 5px 0;
+    border-top: 1px solid var(--border);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .concept-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--text3);
+    font-size: 11px;
+  }
+  .concept-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .concept-segment {
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .open-q {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  /* card color variants */
+  .card-teal .concept-card-header { background: rgba(29,158,117,0.05); }
+  .card-teal .concept-rank { color: var(--teal-400); }
+  .card-coral .concept-card-header { background: rgba(216,90,48,0.05); }
+  .card-coral .concept-rank { color: var(--coral-400); }
+  .card-purple .concept-card-header { background: rgba(127,119,221,0.05); }
+  .card-purple .concept-rank { color: var(--purple-400); }
+
+  /* ---- INTEGRATION CALLOUT ---- */
+  .integration-callout {
+    margin-top: 36px;
+    border: 1px solid rgba(29,158,117,0.25);
+    border-radius: 12px;
+    padding: 20px 24px;
+    background: rgba(29,158,117,0.04);
+  }
+  .integration-callout h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal-200);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .integration-callout p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .integration-callout .flow-line {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .flow-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+  .flow-pill.t { background: rgba(29,158,117,0.15); color: var(--teal-200); }
+  .flow-pill.c { background: rgba(216,90,48,0.15); color: var(--coral-200); }
+  .flow-pill.p { background: rgba(127,119,221,0.15); color: var(--purple-200); }
+  .flow-sep { color: var(--text3); font-size: 14px; }
+
+  /* ---- OPEN QS ---- */
+  .open-qs { display: flex; flex-direction: column; gap: 12px; }
+  .oq-card {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .oq-card:hover { border-color: var(--border2); }
+  .oq-priority {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .oq-critical { background: rgba(226,75,74,0.15); color: #F09595; border: 1px solid rgba(226,75,74,0.25); }
+  .oq-high { background: rgba(186,117,23,0.15); color: var(--amber-100); border: 1px solid rgba(186,117,23,0.25); }
+  .oq-medium { background: rgba(136,135,128,0.12); color: var(--gray-200); border: 1px solid rgba(136,135,128,0.2); }
+  .oq-content h4 { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .oq-content p { font-size: 12.5px; color: var(--text2); line-height: 1.5; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    padding: 24px 48px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">HelloPM Cohort 49 · MGA 4 · Phase 2</div>
+  <h1>The <em>AI Adoption Paradox</em><br>Ideation & Concept Brief</h1>
+  <p>From research findings to product concepts — three barriers, three ideas, one integrated motion.</p>
+  <div class="authors">Jerry Alex · Nishant · Debargha · Priyamvada · Pranit · Himanshu Jain &nbsp;·&nbsp; May 2026</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('hmw')">HMW Ideation</button>
+  <button class="nav-btn" onclick="showSection('matrix')">Idea Matrix</button>
+  <button class="nav-btn" onclick="showSection('concepts')">Top 3 Concepts</button>
+  <button class="nav-btn" onclick="showSection('flow')">User Flow</button>
+  <button class="nav-btn" onclick="showSection('openqs')">Open Questions</button>
+</nav>
+
+<!-- ========== SECTION: HMW ========== -->
+<div class="section visible" id="s-hmw">
+  <div class="section-title">How Might We…</div>
+  <div class="section-sub">Four barriers from Phase 1 research → opportunity spaces → solution directions</div>
+
+  <div class="hmw-grid">
+
+    <!-- Barrier 1: Decomposition Wall -->
+    <div class="hmw-barrier coral">
+      <div class="barrier-header">
+        <div class="barrier-dot"></div>
+        <h3>Decomposition Wall</h3>
+        <div class="profile-tag">P3</div>
+      </div>
+      <div class="hmw-questions">
+        <div class="hmw-q"><strong>HMW</strong> give people a template to map their own recurring tasks as trigger → step → output, before touching any tool?</div>
+        <div class="hmw-q"><strong>HMW</strong> make "what should I automate?" answerable in under 10 minutes?</div>
+        <div class="hmw-q"><strong>HMW</strong> show users the right tool tier after they describe their task — not before?</div>
+        <div class="hmw-q"><strong>Wild idea:</strong> An AI that watches your work for a week and auto-surfaces automation candidates from your calendar and inbox.</div>
+      </div>
+      <div class="solution-pill">→ WorkflowFirst</div>
+    </div>
+
+    <!-- Barrier 2: Peer Proof Gap -->
+    <div class="hmw-barrier teal">
+      <div class="barrier-header">
+        <div class="barrier-dot"></div>
+        <h3>Peer Proof Gap</h3>
+        <div class="profile-tag">P2</div>
+      </div>
+      <div class="hmw-questions">
+        <div class="hmw-q"><strong>HMW</strong> replace YouTube tutorials with a 10-min recording from someone in the exact same role?</div>
+        <div class="hmw-q"><strong>HMW</strong> match users to a peer — same title, same org-type — who has already crossed?</div>
+        <div class="hmw-q"><strong>HMW</strong> let users search for proof by role, not by industry?</div>
+        <div class="hmw-q"><strong>Wild idea:</strong> Pay a peer in your exact role $30 for a structured 20-minute live activation session.</div>
+      </div>
+      <div class="solution-pill">→ ProofMatch</div>
+    </div>
+
+    <!-- Barrier 3: First-Ship Wall -->
+    <div class="hmw-barrier purple">
+      <div class="barrier-header">
+        <div class="barrier-dot"></div>
+        <h3>First-Ship Wall</h3>
+        <div class="profile-tag">P3</div>
+      </div>
+      <div class="hmw-questions">
+        <div class="hmw-q"><strong>HMW</strong> give a stranded PM a real shipped automation in their actual job — within 7 days?</div>
+        <div class="hmw-q"><strong>HMW</strong> combine learning + portfolio proof so every build becomes a career asset?</div>
+        <div class="hmw-q"><strong>HMW</strong> reduce the Lovable-to-production wall for non-technical PMs?</div>
+        <div class="hmw-q"><strong>Wild idea:</strong> A "fluency passport" — a portable, employer-readable proof-of-capability document tied to a real shipped output.</div>
+      </div>
+      <div class="solution-pill">→ ShipSprint</div>
+    </div>
+
+    <!-- Barrier 4: Trigger Absence -->
+    <div class="hmw-barrier gray-b">
+      <div class="barrier-header">
+        <div class="barrier-dot"></div>
+        <h3>Trigger Absence</h3>
+        <div class="profile-tag">P2 / Low</div>
+      </div>
+      <div class="hmw-questions">
+        <div class="hmw-q"><strong>HMW</strong> surface activation moments (job hunt, performance review, peer crossing) and meet users exactly then?</div>
+        <div class="hmw-q"><strong>HMW</strong> create urgency without leaning on fear — which generates content consumption, not building?</div>
+        <div class="hmw-q"><strong>HMW</strong> design a product that waits for the trigger moment rather than trying to create it?</div>
+        <div class="hmw-q" style="color: var(--text3);">Not prioritised for Phase 3: high reach, low conversion signal. No acute trigger = no purchase behavior.</div>
+      </div>
+      <div class="solution-pill" style="background: rgba(136,135,128,0.08); color: var(--gray-400); border-color: rgba(136,135,128,0.15);">→ Not now</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION: MATRIX ========== -->
+<div class="section" id="s-matrix">
+  <div class="section-title">Idea Filtering Matrix</div>
+  <div class="section-sub">Scored on Impact, Feasibility, and Differentiation — not market whitespace alone</div>
+
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width:200px">Idea</th>
+        <th>Impact</th>
+        <th>Feasibility</th>
+        <th>Differentiation</th>
+        <th>Total</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="idea-name">WorkflowFirst</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--coral-400)"></div></div><span>9</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--coral-400)"></div></div><span>8</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--coral-400)"></div></div><span>9</span></div></td>
+        <td class="total-score">26</td>
+        <td><span class="rank-badge rank-1">#1 Primary</span></td>
+      </tr>
+      <tr>
+        <td class="idea-name">ProofMatch</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal-400)"></div></div><span>8</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--teal-400)"></div></div><span>7</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal-400)"></div></div><span>8</span></div></td>
+        <td class="total-score">23</td>
+        <td><span class="rank-badge rank-2">#2 Activation</span></td>
+      </tr>
+      <tr>
+        <td class="idea-name">ShipSprint</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--purple-400)"></div></div><span>9</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--purple-400)"></div></div><span>6</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--purple-400)"></div></div><span>7</span></div></td>
+        <td class="total-score">22</td>
+        <td><span class="rank-badge rank-3">#3 Premium</span></td>
+      </tr>
+      <tr>
+        <td class="idea-name">AI Shadowing App</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gray-400)"></div></div><span>8</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--gray-400)"></div></div><span>3</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--gray-400)"></div></div><span>9</span></div></td>
+        <td class="total-score">20</td>
+        <td><span class="rank-badge rank-b">Backlog</span></td>
+      </tr>
+      <tr>
+        <td class="idea-name">Fluency Passport</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--gray-400)"></div></div><span>6</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gray-400)"></div></div><span>8</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--gray-400)"></div></div><span>6</span></div></td>
+        <td class="total-score">20</td>
+        <td><span class="rank-badge rank-b">Feature</span></td>
+      </tr>
+      <tr>
+        <td class="idea-name">Activation Marketplace</td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--gray-400)"></div></div><span>7</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--gray-400)"></div></div><span>4</span></div></td>
+        <td><div class="score-bar"><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--gray-400)"></div></div><span>7</span></div></td>
+        <td class="total-score">18</td>
+        <td><span class="rank-badge rank-b">Backlog</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="integration-callout">
+    <h4>Why WorkflowFirst ranks #1</h4>
+    <p>It solves the upstream blocker all three barriers share. If users can't decompose their work, ProofMatch and ShipSprint both fail too. WorkflowFirst is the wedge — the pre-step that every existing tool (Zapier, n8n, Lovable, ADPList) has skipped.</p>
+  </div>
+</div>
+
+<!-- ========== SECTION: CONCEPTS ========== -->
+<div class="section" id="s-concepts">
+  <div class="section-title">Top 3 Concept Briefs</div>
+  <div class="section-sub">Each concept breaks exactly one specific mechanism failure identified in Phase 1</div>
+
+  <div class="concepts-grid">
+
+    <!-- WorkflowFirst -->
+    <div class="concept-card card-coral">
+      <div class="concept-card-header">
+        <div class="concept-rank">Concept #1 · Wedge Product</div>
+        <h3>WorkflowFirst</h3>
+        <p>A guided canvas that takes a non-technical professional from "I want to automate something" to a concrete trigger → steps → output spec — before recommending any tool or writing any code.</p>
+      </div>
+      <div class="concept-body">
+        <div class="concept-label">Barrier it breaks</div>
+        <div class="concept-value">Decomposition Wall — users stall before tools because they can't describe what they want with enough specificity to make a tool choice.</div>
+        <div class="concept-label">Key features</div>
+        <ul class="concept-features">
+          <li>Role-prefilled templates (PM, Ops, Marketing, CS)</li>
+          <li>Decomposition coach — AI asks "what triggers this? what comes next?" not concepts</li>
+          <li>Complexity scorer → recommends ChatGPT / Zapier / n8n / code</li>
+          <li>Portable one-page automation spec output</li>
+        </ul>
+        <div class="concept-label">What it is NOT</div>
+        <div class="concept-value">Not a tool-building platform. It is the pre-step that Zapier, n8n, and Lovable have all skipped.</div>
+        <div class="concept-label">Differentiation</div>
+        <div class="concept-value">Section AI teaches concepts. ADPList connects people. n8n builds workflows. No product helps users describe their own work in buildable terms. This is structurally absent.</div>
+      </div>
+      <div class="concept-footer">
+        <span class="concept-segment">Segment: P3 Aspiring Builders + P2 Surface Users</span>
+      </div>
+    </div>
+
+    <!-- ProofMatch -->
+    <div class="concept-card card-teal">
+      <div class="concept-card-header">
+        <div class="concept-rank">Concept #2 · Activation Layer</div>
+        <h3>ProofMatch</h3>
+        <p>A searchable library of 10-minute proof recordings — real professionals showing one real AI workflow from their actual job — matched by exact role and org-type, not industry.</p>
+      </div>
+      <div class="concept-body">
+        <div class="concept-label">Barrier it breaks</div>
+        <div class="concept-value">Peer Proof Gap — cross-role demos inspire but don't activate. Rohan watched his best engineer demo AI twice. Usage at his desk: unchanged.</div>
+        <div class="concept-label">Key features</div>
+        <ul class="concept-features">
+          <li>Role + org-type matching (not industry — Rohan's finding)</li>
+          <li>Fixed format: task · trigger · what AI does · real ROI · setup time</li>
+          <li>"Try this" → pre-loads WorkflowFirst canvas with automation structure</li>
+          <li>Contributor program: P4 practitioners submit recordings for visibility</li>
+          <li>Optional 20-min live session with recording author</li>
+        </ul>
+        <div class="concept-label">What it is NOT</div>
+        <div class="concept-value">Not a course. Not a mentoring marketplace. Not YouTube. It is structured role-matched proof, not instruction.</div>
+        <div class="concept-label">Competitive gap</div>
+        <div class="concept-value">ADPList has 30K mentors but unstructured sessions. YouTube demos aren't role-matched. The 10-min fixed-format + role matching is the structural moat.</div>
+      </div>
+      <div class="concept-footer">
+        <span class="concept-segment">Segment: P2 Surbhi/Rohan profiles</span>
+      </div>
+    </div>
+
+    <!-- ShipSprint -->
+    <div class="concept-card card-purple">
+      <div class="concept-card-header">
+        <div class="concept-rank">Concept #3 · Premium Layer</div>
+        <h3>ShipSprint</h3>
+        <p>A 7-day structured sprint from "stuck" to "shipped and portfolio-documented" — in your actual job, on a real automation, with a peer guide who has crossed the same wall.</p>
+      </div>
+      <div class="concept-body">
+        <div class="concept-label">Barrier it breaks</div>
+        <div class="concept-value">First-Ship Wall — motivated, capable professionals can prototype. They cannot ship. The gap is not motivation — it's structured accountability + a portfolio output that makes the effort count.</div>
+        <div class="concept-label">7-day structure</div>
+        <ul class="concept-features">
+          <li>Day 1-2: Decompose + specify (WorkflowFirst canvas)</li>
+          <li>Day 3-5: Build + test with async peer guide available</li>
+          <li>Day 6-7: Ship + document portfolio case study</li>
+        </ul>
+        <div class="concept-label">Key differentiators vs Will Lowrey PM OS</div>
+        <ul class="concept-features">
+          <li>7 days, not 4 weeks</li>
+          <li>No curriculum — output is the product, not learning</li>
+          <li>1:1 role-matched peer, not cohort</li>
+          <li>Portfolio artifact = portable proof of AI fluency</li>
+        </ul>
+        <div class="concept-label">Phase 3 gate</div>
+        <div class="concept-value">Show a stranded PM Will Lowrey's landing page. If they can't say why ShipSprint is different, differentiation must sharpen before building.</div>
+      </div>
+      <div class="concept-footer">
+        <span class="concept-segment">Segment: P3 Capable Stranded PMs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="integration-callout" style="margin-top:28px">
+    <h4>The integrated motion — one product, three layers</h4>
+    <p>These are not three separate products. Each layer feeds the next. A user sees proof in ProofMatch → maps their version in WorkflowFirst → ships with accountability in ShipSprint.</p>
+    <div class="flow-line">
+      <span class="flow-pill t">ProofMatch activates</span>
+      <span class="flow-sep">→</span>
+      <span class="flow-pill c">WorkflowFirst specifies</span>
+      <span class="flow-sep">→</span>
+      <span class="flow-pill p">ShipSprint ships</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION: FLOW ========== -->
+<div class="section" id="s-flow">
+  <div class="section-title">User Journey — Integrated Flow</div>
+  <div class="section-sub">How a stuck P2/P3 professional moves from peer proof to live automation</div>
+
+  <div class="flow-wrapper">
+
+    <!-- Layer 1: ProofMatch -->
+    <div class="flow-layer layer-teal">
+      <div class="flow-layer-header">
+        <div class="layer-num">1</div>
+        <h3>ProofMatch — Activation</h3>
+        <span>P2/P3 enters here</span>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-icon">👤</div>
+          <div class="step-title">Stuck professional</div>
+          <div class="step-desc">P2/P3 · Named the gap · Has tried and stopped</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">🔍</div>
+          <div class="step-title">Enter role + org type</div>
+          <div class="step-desc">"Senior PM · B2B SaaS" — not industry, not seniority band alone</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">▶</div>
+          <div class="step-title">3-5 matched recordings</div>
+          <div class="step-desc">10 min · same role · real workflow · real ROI · fixed format</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color: rgba(29,158,117,0.35);">
+          <div class="step-icon">✓</div>
+          <div class="step-title">"I want to try this"</div>
+          <div class="step-desc">Activation moment — pre-loads WorkflowFirst canvas with automation structure</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector">
+      <span class="connector-label">pre-loads automation spec into canvas</span>
+    </div>
+
+    <!-- Layer 2: WorkflowFirst -->
+    <div class="flow-layer layer-coral">
+      <div class="flow-layer-header">
+        <div class="layer-num">2</div>
+        <h3>WorkflowFirst — Decomposition</h3>
+        <span>The pre-step no tool has built</span>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-icon">❓</div>
+          <div class="step-title">3 anchor questions</div>
+          <div class="step-desc">What repeats? What triggers it? What does done look like?</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">🔧</div>
+          <div class="step-title">AI breaks it down</div>
+          <div class="step-desc">Trigger → Input sources → Steps → Output format → Destination</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">📊</div>
+          <div class="step-title">Complexity scorer</div>
+          <div class="step-desc">ChatGPT prompt / Zapier / n8n / custom code — matched to task complexity</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color: rgba(216,90,48,0.35);">
+          <div class="step-icon">📄</div>
+          <div class="step-title">One-page spec</div>
+          <div class="step-desc">Portable · tool-agnostic · shareable — take to any tool or developer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector">
+      <span class="connector-label">self-serve build OR structured sprint</span>
+    </div>
+
+    <!-- Layer 3: ShipSprint -->
+    <div class="flow-layer layer-purple">
+      <div class="flow-layer-header">
+        <div class="layer-num">3</div>
+        <h3>ShipSprint — Accountability + Portfolio</h3>
+        <span>Premium path · role-matched peer guide</span>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-icon">🗓</div>
+          <div class="step-title">Day 1–2</div>
+          <div class="step-desc">Decompose + specify with peer guide matched by exact role + org type</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">⚙️</div>
+          <div class="step-title">Day 3–5</div>
+          <div class="step-desc">Build + test · async peer guide available · daily 5-min check-in</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">🚀</div>
+          <div class="step-title">Day 6–7</div>
+          <div class="step-desc">Ship + document case study: problem → approach → result → replicable steps</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color: rgba(127,119,221,0.35);">
+          <div class="step-icon">🏆</div>
+          <div class="step-title">Shipped + documented</div>
+          <div class="step-desc">Live automation + LinkedIn-shareable portfolio artifact = AI fluency proof</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Identity shift -->
+    <div style="margin-top: 16px; text-align: center; padding: 20px; border: 1px solid rgba(29,158,117,0.2); border-radius: 10px; background: rgba(29,158,117,0.04);">
+      <div style="font-size: 13px; color: var(--text2); margin-bottom: 4px;">Identity shift</div>
+      <div style="font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--teal-200);">"I am someone who builds with AI."</div>
+      <div style="font-size: 12px; color: var(--text3); margin-top: 6px;">P4 Fluent Practitioner · Can now become a ProofMatch contributor and peer guide</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== SECTION: OPEN QS ========== -->
+<div class="section" id="s-openqs">
+  <div class="section-title">Open Questions for Phase 3</div>
+  <div class="section-sub">What we don't yet know — and what must be resolved before building</div>
+
+  <div class="open-qs">
+    <div class="oq-card">
+      <div class="oq-priority oq-critical">Critical</div>
+      <div class="oq-content">
+        <h4>Live vs. recorded peer demo — which activates?</h4>
+        <p>If a recorded demo from a role-proximate peer activates equally to a live session, the product scales as a platform. If live presence is required, it is a service first. Business model changes completely. Highest-stakes open question before any build.</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-critical">Critical</div>
+      <div class="oq-content">
+        <h4>Does WorkflowFirst work self-serve, or does it need a live AI coach?</h4>
+        <p>Determines whether Phase 3 build is a guided canvas (lower complexity) or a conversational AI agent (higher complexity, higher moat). Must be tested with 3+ stuck professionals in a prototype session.</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-high">High</div>
+      <div class="oq-content">
+        <h4>ShipSprint vs Will Lowrey's PM OS — does differentiation hold?</h4>
+        <p>Show a stranded PM Will Lowrey's landing page and ask "why would you not just do this?" If the answer is unsatisfying, the segment or the 20% differentiation must change. Non-negotiable gate before building ShipSprint.</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-high">High</div>
+      <div class="oq-content">
+        <h4>Portfolio motive — core feature or nice-to-have?</h4>
+        <p>Ritvik is explicit: building to solve a problem AND prove capability simultaneously. If this dual motive is widespread, the portfolio artifact is a core feature. Ask every Phase 3 recruit: "If you shipped a working automation this week, what would you do with it?"</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-high">High</div>
+      <div class="oq-content">
+        <h4>What is the minimum viable "first win"?</h4>
+        <p>Chandu's 7hr → 1hr moment was dramatic. Is that the bar, or can a 30-minute save trigger the same identity shift? Determines the design bar for the week-one WorkflowFirst experience.</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-medium">Medium</div>
+      <div class="oq-content">
+        <h4>Finance as a separate ICP?</h4>
+        <p>One data point in Phase 1. The trust-first blocker in finance is structurally distinct — domain stakes (wrong numbers, data leaks) block every first attempt. If 3+ finance professionals from different orgs name the same barrier, it requires a distinct product track the current wedge cannot serve.</p>
+      </div>
+    </div>
+    <div class="oq-card">
+      <div class="oq-priority oq-medium">Medium</div>
+      <div class="oq-content">
+        <h4>Does peer activation work outside tech-adjacent industries?</h4>
+        <p>Every confirmed activation event in Phase 1 was in tech or tech-adjacent. Healthcare, legal, education are entirely absent. Phase 3 must recruit at least 3 interviews each from non-tech-adjacent verticals before claiming the mechanism generalises.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>HelloPM Cohort 49 · Assignment 4 · Phase 2 · Version 1.0 · May 2026</span>
+  <span>Jerry Alex · Nishant · Debargha · Priyamvada · Pranit · Himanshu Jain</span>
+</footer>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('visible');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
